@@ -42,6 +42,7 @@
 - alert_rules.yml - Правила алертинга (p95 > 1s, Error Rate > 1%, сервис down)
 - grafana_dashboard.json - Дашборд для импорта в Grafana
 - dqops_sql.sql - SQL, вызывающий инцидент качества данных
+- HW8_Monitoring_Шумакова_Валентина.ipynb - заполненный блокнот
 
 ## Запуск
 ### 1. Клонировать репозиторий 
