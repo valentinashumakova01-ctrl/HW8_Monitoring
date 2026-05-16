@@ -56,7 +56,7 @@ def recommend():
 
         # Генерация рекомендаций
         movies = random.sample(range(1, 200), 10)
-        scores = [round(random.beta(2, 5), 3) for _ in range(10)]
+        scores = [round(random.betavariate(2, 5), 3) for _ in range(10)]
 
         for score in scores:
             MODEL_SCORE.observe(score)
