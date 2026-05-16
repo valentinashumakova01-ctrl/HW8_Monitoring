@@ -35,14 +35,14 @@
 **Latency p95 < 1 секунда** — выбрана потому что напрямую влияет на конверсию: медленный виджет → пользователь уходит → бизнес теряет выручку.
 
 ## Структура проекта
-docker-compose.yml - Запуск Prometheus + Grafana + ML-сервис
-Dockerfile - Сборка ML-сервиса
-ml_service.py - Flask-приложение с Prometheus-метриками
-prometheus.yml - Конфигурация сбора метрик
-alert_rules.yml - Правила алертинга (p95 > 1s, Error Rate > 1%, сервис down)
-grafana_dashboard.json - Дашборд для импорта в Grafana
-data_drift_report.html - Отчёт Evidently о дрифте данных
-dqops_sql.sql - SQL, вызывающий инцидент качества данных
+- docker-compose.yml - Запуск Prometheus + Grafana + ML-сервис
+- Dockerfile - Сборка ML-сервиса
+- ml_service.py - Flask-приложение с Prometheus-метриками
+- prometheus.yml - Конфигурация сбора метрик
+- alert_rules.yml - Правила алертинга (p95 > 1s, Error Rate > 1%, сервис down)
+- grafana_dashboard.json - Дашборд для импорта в Grafana
+- data_drift_report.html - Отчёт Evidently о дрифте данных
+- dqops_sql.sql - SQL, вызывающий инцидент качества данных
 
 ## Запуск
 ### 1. Клонировать репозиторий 
