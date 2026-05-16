@@ -69,5 +69,12 @@ open http://localhost:9090/targets
 - Алерт HighLatency перейдёт в состояние FIRING:
   - Проверить: http://localhost:9090/alerts
   - Grafana: http://localhost:3000/alerting
+ 
+### 6. Data Quality
+DQOps не разворачивался (требует GUI). Вместо этого:
+- Создан dqops_sql.sql с демонстрацией инцидента качества данных
+- Таблица recommendations заполнена чистыми данными
+- Выполнены 3 типа нарушений: выход score за [0,1], NULL, дубликаты
+- Проверки показывают все нарушения (скриншот)
 
 
