@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  # ML-сервис рекомендаций
+  ml_service:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SIMULATE_HIGH_LATENCY=false
+    restart: unless-stopped
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - ml_service
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  # Генератор трафика
+  load_generator:
+    image: alpine/curl:latest
+    command: |
+      sh -c "while true; do curl -s http://ml_service:8000/recommend?user_id=$$((RANDOM % 500)); sleep 0.5; done"
+    depends_on:
+      - ml_service
