@@ -1,0 +1,117 @@
+{
+  "dashboard": {
+    "title": "ML Recommender — SLO Monitoring",
+    "uid": "ml-slo-dashboard",
+    "tags": ["ml", "recommender", "slo"],
+    "timezone": "browser",
+    "refresh": "10s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Latency p95 (SLO: < 1s)",
+        "type": "timeseries",
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 6},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(request_latency_seconds_bucket{job=\"ml_recommender\"}[5m])) by (le))",
+            "legendFormat": "p95 latency"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 0.5},
+                {"color": "red", "value": 1.0}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Error Rate (SLO: < 1%)",
+        "type": "timeseries",
+        "gridPos": {"x": 0, "y": 6, "w": 6, "h": 5},
+        "targets": [
+          {
+            "expr": "sum(rate(error_count_total{job=\"ml_recommender\"}[5m])) / sum(rate(request_count_total{job=\"ml_recommender\"}[5m]))",
+            "legendFormat": "error rate"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "max": 0.05,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "red", "value": 0.01}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Availability (SLO: > 99.5%)",
+        "type": "stat",
+        "gridPos": {"x": 6, "y": 6, "w": 3, "h": 5},
+        "targets": [
+          {
+            "expr": "avg_over_time(up{job=\"ml_recommender\"}[1h])",
+            "legendFormat": "uptime"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 0.99},
+                {"color": "green", "value": 0.995}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "RPS (Throughput)",
+        "type": "timeseries",
+        "gridPos": {"x": 9, "y": 6, "w": 3, "h": 5},
+        "targets": [
+          {
+            "expr": "sum(rate(recommendations_served_total{job=\"ml_recommender\"}[1m]))",
+            "legendFormat": "RPS"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {"unit": "reqps"}
+        }
+      },
+      {
+        "id": 5,
+        "title": "Model Score Distribution",
+        "type": "timeseries",
+        "gridPos": {"x": 0, "y": 11, "w": 12, "h": 4},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, sum(rate(model_score_bucket{job=\"ml_recommender\"}[5m])) by (le))",
+            "legendFormat": "p50 score"
+          },
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(model_score_bucket{job=\"ml_recommender\"}[5m])) by (le))",
+            "legendFormat": "p95 score"
+          }
+        ]
+      }
+    ]
+  }
+}
