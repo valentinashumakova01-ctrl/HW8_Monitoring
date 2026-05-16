@@ -1,0 +1,54 @@
+groups:
+  - name: ml_recommender_slo
+    interval: 30s
+    rules:
+      # Алерт 1: Высокая задержка (p95 > 1 сек)
+      - alert: HighLatencyP95
+        expr: |
+          histogram_quantile(0.95, 
+            sum(rate(request_latency_seconds_bucket{job="ml_recommender"}[5m])) by (le)
+          ) > 1.0
+        for: 2m
+        labels:
+          severity: warning
+          team: backend
+          sla: "p95 < 1s"
+        annotations:
+          summary: "p95 latency ML-сервиса превысила 1 секунду"
+          description: >
+            Текущее значение p95 latency: {{ $value }}с.
+            SLO нарушен (цель < 1с).
+            Проверьте нагрузку на сервис и время ответа модели.
+          runbook_url: "https://wiki.company.com/runbooks/high-latency"
+
+      # Алерт 2: Высокий уровень ошибок (> 1%)
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(error_count_total{job="ml_recommender"}[5m]))
+          /
+          sum(rate(request_count_total{job="ml_recommender"}[5m])) > 0.01
+        for: 3m
+        labels:
+          severity: critical
+          team: backend
+          sla: "Error Rate < 1%"
+        annotations:
+          summary: "Error Rate ML-сервиса превысил 1%"
+          description: >
+            Доля ошибок: {{ $value | humanizePercentage }}.
+            SLO нарушен (цель < 1%).
+            Проверьте логи сервиса и статус зависимостей.
+
+      # Алерт 3: Сервис недоступен
+      - alert: ServiceDown
+        expr: up{job="ml_recommender"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: devops
+          sla: "Availability > 99.5%"
+        annotations:
+          summary: "ML-сервис недоступен (instance {{ $labels.instance }})"
+          description: >
+            Сервис ml_recommender не отвечает более 1 минуты.
+            Проверьте контейнер и перезапустите при необходимости.
