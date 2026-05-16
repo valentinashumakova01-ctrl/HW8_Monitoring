@@ -5,16 +5,27 @@
 ## Дерево метрик и SLO
 УВЕЛИЧИТЬ ВЫРУЧКУ ОНЛАЙН-КИНОТЕАТРА
 ├── БИЗНЕС (Product)
+
 │ ├── Конверсия в просмотр — SLO: > 12%
+
+
 │ └── Доход на 1000 показов — SLO: +5% MoM
 ├── ПРИЛОЖЕНИЕ (Frontend/API)
+
 │ ├── Загрузка виджета p95 — SLO: < 500 мс
+
 │ └── Ошибки API — SLO: Error Rate < 1%
+
 ├── ML-МОДЕЛЬ (Data Science)
+
 │ ├── Точность Recall@20 — SLO: > 0.25
+
 │ └── Свежесть данных — SLO: < 4 часа
+
 └── ИНФРАСТРУКТУРА (DevOps)
+
 ├── Доступность сервиса — SLO: > 99.5%
+
 └── Пропускная способность — SLO: 10 000 RPS
 
 ## Выбранный SLO для мониторинга
@@ -32,19 +43,17 @@ data_drift_report.html - Отчёт Evidently о дрифте данных
 dqops_sql.sql - SQL, вызывающий инцидент качества данных
 
 ## Запуск
-# 1. Клонировать репозиторий
-git clone https://github.com/<user>/ml-monitoring-hw.git
-cd ml-monitoring-hw
+### Клонировать репозиторий
 
-# 2. Запустить сервисы
+### Запустить сервисы
 docker-compose up -d
 
-# 3. Проверить ML-сервис
+### ML-сервис
 curl http://localhost:8000/recommend?user_id=123
 curl http://localhost:8000/metrics
 
-# 4. Проверить Prometheus
+### Prometheus
 open http://localhost:9090/targets
 
-# 5. Открыть Grafana
+### Grafana
 open http://localhost:3000
