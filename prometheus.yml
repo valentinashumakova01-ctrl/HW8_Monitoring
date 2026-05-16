@@ -1,0 +1,26 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    environment: production
+    service: ml-recommender
+
+# Подключаем правила алертинга
+rule_files:
+  - /etc/prometheus/alert_rules.yml
+
+scrape_configs:
+  # ML-сервис
+  - job_name: 'ml_recommender'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['ml_service:8000']
+        labels:
+          service: 'recommender'
+          team: 'ml'
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:9090']
