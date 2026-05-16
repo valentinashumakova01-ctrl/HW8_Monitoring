@@ -5,8 +5,9 @@
 ## Дерево метрик и SLO
 УВЕЛИЧИТЬ ВЫРУЧКУ ОНЛАЙН-КИНОТЕАТРА
 
--├── БИЗНЕС (Product)
--│ ├── Конверсия в просмотр — SLO: > 12%
+├── БИЗНЕС (Product)
+
+│ ├── Конверсия в просмотр — SLO: > 12%
 
 
 │ └── Доход на 1000 показов — SLO: +5% MoM
@@ -51,23 +52,23 @@ git clone https://github.com/valentinashumakova01-ctrl/HW8_Monitoring.git
 docker-compose up -d
 
 ### 3. ML-сервис
-curl http://localhost:8000/recommend?user_id=123
-curl http://localhost:8000/metrics
+- curl http://localhost:8000/recommend?user_id=123
+- curl http://localhost:8000/metrics
 
 ### 3. Prometheus
 open http://localhost:9090/targets
 
 ### 4. Grafana
-open http://localhost:3000
-Логин: admin / Пароль: admin
-Data Sources - Add - Prometheus (URL: http://prometheus:9090)
-Dashboards - Import - grafana_dashboard.json
+- open http://localhost:3000
+- Логин: admin / Пароль: admin
+- Data Sources - Add - Prometheus (URL: http://prometheus:9090)
+- Dashboards - Import - grafana_dashboard.json
 
 ### 5. Тестирование алерта
-В docker-compose.yml изменить переменную: SIMULATE_HIGH_LATENCY=true
-Перезапустить ML-сервис: docker-compose up -d ml_service
-Алерт HighLatency перейдёт в состояние FIRING:
-   Проверить: http://localhost:9090/alerts
-   Grafana: http://localhost:3000/alerting
+- В docker-compose.yml изменить переменную: SIMULATE_HIGH_LATENCY=true
+- Перезапустить ML-сервис: docker-compose up -d ml_service
+- Алерт HighLatency перейдёт в состояние FIRING:
+  - Проверить: http://localhost:9090/alerts
+  - Grafana: http://localhost:3000/alerting
 
 
