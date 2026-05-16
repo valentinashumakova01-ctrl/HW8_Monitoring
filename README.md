@@ -41,7 +41,6 @@
 - prometheus.yml - Конфигурация сбора метрик
 - alert_rules.yml - Правила алертинга (p95 > 1s, Error Rate > 1%, сервис down)
 - grafana_dashboard.json - Дашборд для импорта в Grafana
-- data_drift_report.html - Отчёт Evidently о дрифте данных
 - dqops_sql.sql - SQL, вызывающий инцидент качества данных
 
 ## Запуск
