@@ -43,17 +43,30 @@ data_drift_report.html - Отчёт Evidently о дрифте данных
 dqops_sql.sql - SQL, вызывающий инцидент качества данных
 
 ## Запуск
-### Клонировать репозиторий
+### 1. Клонировать репозиторий 
+git clone https://github.com/valentinashumakova01-ctrl/HW8_Monitoring.git
 
-### Запустить сервисы
+### 2. Запустить сервисы
 docker-compose up -d
 
-### ML-сервис
+### 3. ML-сервис
 curl http://localhost:8000/recommend?user_id=123
 curl http://localhost:8000/metrics
 
-### Prometheus
+### 3. Prometheus
 open http://localhost:9090/targets
 
-### Grafana
+### 4. Grafana
 open http://localhost:3000
+Логин: admin / Пароль: admin
+Data Sources - Add - Prometheus (URL: http://prometheus:9090)
+Dashboards - Import - grafana_dashboard.json
+
+### 5. Тестирование алерта
+В docker-compose.yml изменить переменную: SIMULATE_HIGH_LATENCY=true
+Перезапустить ML-сервис: docker-compose up -d ml_service
+Алерт HighLatency перейдёт в состояние FIRING:
+   Проверить: http://localhost:9090/alerts
+   Grafana: http://localhost:3000/alerting
+
+
